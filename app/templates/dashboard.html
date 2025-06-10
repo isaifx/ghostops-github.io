@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block body_class %}dashboard-bg{% endblock %}
+{% block title %}Dashboard - GhostOps{% endblock %}
+
+{% block content %}
+<h2 class="mb-4 text-info">Welcome, {{ user.email }}!</h2>
+
+<div class="mb-3">
+  <a href="{{ url_for('main.add_task') }}" class="btn btn-info">+ Add New Task</a>
+</div>
+
+{% if tasks %}
+<table class="table table-dark table-striped table-hover align-middle">
+  <thead>
+    <tr>
+      <th scope="col">Task</th>
+      <th scope="col">Status</th>
+      <th scope="col" style="width: 150px;">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for task in tasks %}
+    <tr>
+      <td>{{ task.title }}</td>
+      <td>
+        {% if task.completed %}
+          <span class="badge bg-success">Completed</span>
+        {% else %}
+          <span class="badge bg-warning text-dark">Pending</span>
+        {% endif %}
+      </td>
+      <td>
+        <a href="{{ url_for('main.edit_task', task_id=task.id) }}" class="btn btn-sm btn-outline-info me-1">Edit</a>
+        <form action="{{ url_for('main.delete_task', task_id=task.id) }}" method="POST" style="display:inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure?')">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+  <p class="text-muted fst-italic">No tasks yet. Start by adding a new task!</p>
+{% endif %}
+{% endblock %}

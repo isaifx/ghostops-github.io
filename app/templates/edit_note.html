@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Edit Note - GhostOps{% endblock %}
+
+{% block content %}
+<h2 class="mb-4 text-info">Edit Note</h2>
+
+<form method="POST">
+  {{ form.hidden_tag() }}
+  <div class="mb-3">
+    {{ form.content.label(class="form-label") }}
+    {{ form.content(class="form-control", rows=5) }}
+  </div>
+  <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+  <a href="{{ url_for('main.notes') }}" class="btn btn-secondary ms-2">Cancel</a>
+</form>
+{% endblock %}

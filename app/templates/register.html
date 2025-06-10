@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Register - GhostOps{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-6 col-lg-5">
+    <div class="card shadow border-0" style="background-color: #121412; color: #a0c060;">
+      <div class="card-header text-center border-0">
+        <h3 class="text-info" style="text-shadow: 0 0 6px #4a7c21;">Create Account</h3>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="{{ url_for('auth.register') }}">
+          {{ form.hidden_tag() }}
+
+          <div class="mb-3">
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control bg-dark text-light border-info", placeholder="Enter your email") }}
+            {% for error in form.email.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="mb-3">
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-control bg-dark text-light border-info", placeholder="Enter your password") }}
+            {% for error in form.password.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="mb-3">
+            {{ form.confirm_password.label(class="form-label") }}
+            {{ form.confirm_password(class="form-control bg-dark text-light border-info", placeholder="Confirm your password") }}
+            {% for error in form.confirm_password.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="d-grid mb-3">
+            {{ form.submit(class="btn btn-outline-info fw-bold") }}
+          </div>
+
+          <div class="text-center">
+            <small class="text-info">
+              Already have an account? <a href="{{ url_for('auth.login') }}" class="text-info fw-bold">Sign in here</a>
+            </small>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

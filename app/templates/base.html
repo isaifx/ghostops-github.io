@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}GhostOps{% endblock %}</title>
+
+    <!-- Google Fonts: Orbitron -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet" />
+
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Custom Ghost Theme CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ghost-theme.css') }}" />
+
+    <style>
+        body {
+            background-color: #0b0c0f; /* deep black */
+            color: #b8f27a; /* muted green */
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Navbar brand with subtle green glow */
+        .navbar-brand {
+            color: #8fc64e;
+            text-shadow: 0 0 4px #4a7c21;
+            font-weight: 700;
+        }
+
+        /* Nav links in a solid green */
+        .nav-link {
+            color: #a0c060 !important;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #c3e37a !important;
+            text-decoration: underline;
+        }
+
+        /* Flash message styling */
+        .alert-info {
+            background-color: #121412;
+            border-color: #4a7c21;
+            color: #a0c060;
+            box-shadow: inset 0 0 8px #4a7c21;
+            font-weight: 600;
+        }
+
+        /* Footer quote style */
+        footer {
+            color: #5a7c21;
+            font-style: italic;
+            text-align: center;
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #4a7c21;
+            font-size: 0.9rem;
+            background-color: #0b0c0f;
+        }
+    </style>
+
+    {% block head %}{% endblock %}
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('main.dashboard') }}">
+                GhostOps
+            </a>
+
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.register') }}">Register</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-4">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="alert alert-info" role="alert">
+              {% for message in messages %}
+                {{ message }}<br />
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        “Sometimes, the only way to win is to disappear.” – Simon Riley (Ghost)
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
